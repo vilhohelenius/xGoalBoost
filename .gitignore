@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+catboost_info/
+shots_*.csv
+*.cbm
+.env

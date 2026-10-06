@@ -1,0 +1,6 @@
+pandas
+scikit-learn
+xgboost
+catboost
+pyarrow
+tabpfn-client
