@@ -53,4 +53,4 @@ before XGBoost in the same process, so `tabpfn_test.py` runs XGBoost first.
 
 ## Demo: xG shot map
 
-`demo/index.html` is a self-contained interactive page (open it in a browser). Pick a shot type, situation (5v5, power play, short-handed, 3v3, empty net), rebound and rush, then click the rink to see the goal probability of a shot from that spot. The heat map is precomputed from an XGBoost model trained on seasons 2023-25. Rebuild with `python demo/build_demo.py` (needs the CSVs).
+**Live: https://vilhohelenius.github.io/xGoalBoost-tabpfn/demo/** (`demo/index.html` is a self-contained interactive page). Pick a shot type, situation (5v5, power play, short-handed, 3v3, empty net), rebound and rush, then click the rink to see the goal probability of a shot from that spot. The heat map is precomputed from an XGBoost model trained on seasons 2023-25. Rebuild with `python demo/build_demo.py` (needs the CSVs).
