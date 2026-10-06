@@ -21,9 +21,14 @@ No MoneyPuck model outputs, player IDs or team IDs are used as features.
 | TabPFN-3.5, 50k train rows | same | 0.794 |
 | XGBoost, 100k train rows | same | 0.797 |
 | TabPFN-3.5, 100k train rows | same | **0.8005** |
+| TabPFN-3.5 ensemble, 3 × 100k | same | **0.8021** |
 
 TabPFN beats XGBoost on the same 50k and 100k-row samples and nearly closes the gap to XGBoost on all ~240k rows
-(0.802 on the same test sample), but it cannot use the whole training set, so full-data XGBoost is still marginally best.
+(0.802 on the same test sample), but it cannot use the whole training set in one fit. Averaging three 100k-row TabPFN fits reaches 0.8021, on par with
+full-data XGBoost (the 0.0004 gap is within test-sample noise). See `learning_curve.png`, `results.json` and
+`scaling_experiment.py`.
+
+![Learning curve](learning_curve.png)
 
 ## A data leak worth knowing about
 
