@@ -41,5 +41,5 @@ uv venv --python 3.13 .venv && uv pip install --python .venv/bin/python -r requi
 TABPFN_TOKEN=... .venv/bin/python tabpfn_test.py 50000 30000   # token from https://ux.priorlabs.ai/account
 ```
 
-Data files are not committed (MoneyPuck data terms). XGBoost and `tabpfn-client` can segfault when TabPFN is imported
+Data files are not committed (third-party data, ~200 MB). XGBoost and `tabpfn-client` can segfault when TabPFN is imported
 before XGBoost in the same process, so `tabpfn_test.py` runs XGBoost first.
