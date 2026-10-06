@@ -4,3 +4,4 @@ catboost_info/
 shots_*.csv
 *.cbm
 .env
+data/pbp/

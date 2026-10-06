@@ -1,0 +1,54 @@
+{
+ "features": [
+  "x",
+  "absY",
+  "dist",
+  "angle",
+  "period",
+  "secInPeriod",
+  "gameSec",
+  "shooterSkaters",
+  "defenderSkaters",
+  "shooterGoalie",
+  "emptyNet",
+  "scoreDiff",
+  "isHome",
+  "sinceLast",
+  "distLast",
+  "speedLast",
+  "lastSame",
+  "lastX",
+  "lastAbsY",
+  "rebound",
+  "rush",
+  "sinceLastShotSame",
+  "sinceLastShotOpp",
+  "shotType",
+  "lastEvent"
+ ],
+ "categories": {
+  "shotType": [
+   "backhand",
+   "bat",
+   "between-legs",
+   "cradle",
+   "deflected",
+   "poke",
+   "slap",
+   "snap",
+   "tip-in",
+   "unknown",
+   "wrap-around",
+   "wrist"
+  ],
+  "lastEvent": [
+   "blocked-shot",
+   "faceoff",
+   "giveaway",
+   "hit",
+   "missed-shot",
+   "shot-on-goal",
+   "takeaway"
+  ]
+ }
+}

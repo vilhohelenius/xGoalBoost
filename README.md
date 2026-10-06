@@ -54,3 +54,11 @@ before XGBoost in the same process, so `tabpfn_test.py` runs XGBoost first.
 ## Demo: xG shot map
 
 **Live: https://vilhohelenius.github.io/xGoalBoost-tabpfn/demo/** (`demo/index.html` is a self-contained interactive page). Pick a shot type, situation (5v5, power play, short-handed, 3v3, empty net), rebound and rush, then click the rink to see the goal probability of a shot from that spot. The heat map is precomputed from an XGBoost model trained on seasons 2023-25. Rebuild with `python demo/build_demo.py` (needs the CSVs).
+
+## NHL play-by-play model (player xG and goalie GSAx)
+
+`nhl_pbp/` builds a second model that uses only data available from the public NHL API (`api-web.nhle.com` play-by-play), so it can run in production apps. `download.py` caches regular-season games, `features.py` turns events into shot rows (normalised coordinates, strength, score, last event, rebound/rush), `train_pbp.py` trains and validates, `aggregate.py` writes per-game and per-season tables.
+
+- Skater model: P(goal | unblocked attempt), leave-one-season-out AUC 0.789-0.799. Goalie model: P(goal | shot on goal, non-empty net), AUC 0.774-0.787.
+- Player-season xG correlates 0.982 with MoneyPuck's xG (1,903 player-seasons, 2023-25).
+- Goalie GSAx = expected goals against minus goals against. Held-out seasons are off by up to about 5% in total goals (league scoring varies by season), so compare players within a season.
