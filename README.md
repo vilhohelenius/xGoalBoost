@@ -19,9 +19,11 @@ No MoneyPuck model outputs, player IDs or team IDs are used as features.
 | XGBoost | holdout 2026 (n=3 537) | 0.788 |
 | XGBoost, 50k train rows | train 2023–24, test 2025 sample | 0.789 |
 | TabPFN-3.5, 50k train rows | same | 0.794 |
+| XGBoost, 100k train rows | same | 0.797 |
+| TabPFN-3.5, 100k train rows | same | **0.8005** |
 
-TabPFN beats XGBoost on the same 50k-row sample, but it cannot use the whole 240k-row training set, so XGBoost on all
-data (0.802 on the same test sample) is still best.
+TabPFN beats XGBoost on the same 50k and 100k-row samples and nearly closes the gap to XGBoost on all ~240k rows
+(0.802 on the same test sample), but it cannot use the whole training set, so full-data XGBoost is still marginally best.
 
 ## A data leak worth knowing about
 

@@ -34,7 +34,8 @@ for label, trd in [(f"XGB n_train={N_TRAIN}", tr), ("XGB full 2023-24", df[df.se
 # TabPFN (pilvi) ajetaan XGB:n jälkeen: kirjastojen OpenMP-ristiriita aiheuttaa muuten segfaultin
 import tabpfn_client
 from tabpfn_client import TabPFNClassifier
-tabpfn_client.set_access_token(os.environ['TABPFN_TOKEN'])
+if os.environ.get('TABPFN_TOKEN'):  # muuten käytetään tabpfn_client.init()-kirjautumisen tallentamaa tokenia
+    tabpfn_client.set_access_token(os.environ['TABPFN_TOKEN'])
 t = time.time()
 m = TabPFNClassifier(categorical_features_indices=[feats.index(c) for c in CATEGORICAL])
 m.fit(Xtr, tr[TARGET])
