@@ -1,0 +1,284 @@
+<title>xG Shot Map</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap">
+<style>
+/* Layout: rink on the left (goal at the top), readout and controls on the right; stacked on phones.
+   Heat is goal-light red on ice; everything else stays cool and quiet so the heat is the only loud thing. */
+:root {
+  --bg: #e9eff2;
+  --panel: #f6f9fa;
+  --ice: #fbfdfe;
+  --ink: #10222b;
+  --ink2: #3f545f;
+  --muted: #6b7d87;
+  --line: #cbd7dd;
+  --blueline: #3f72b4;
+  --redline: #c4343b;
+  --crease: #cfe3f3;
+  --focus: #1c5fb4;
+  --pill: #e1e9ed;
+  --pill-on: #10222b;
+  --pill-on-ink: #f6f9fa;
+  --heat0: 255, 226, 198;
+  --heat1: 176, 18, 38;
+  --font-display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --font-body: "Barlow", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b1418; --panel: #111d23; --ice: #162830; --ink: #e8f0f3; --ink2: #b4c4cb; --muted: #8398a2;
+    --line: #263942; --blueline: #5b8fd0; --redline: #d0555a; --crease: #213f55; --focus: #7db3f2;
+    --pill: #1a2b33; --pill-on: #e8f0f3; --pill-on-ink: #0b1418;
+    --heat0: 92, 38, 42; --heat1: 255, 118, 78;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0b1418; --panel: #111d23; --ice: #162830; --ink: #e8f0f3; --ink2: #b4c4cb; --muted: #8398a2;
+  --line: #263942; --blueline: #5b8fd0; --redline: #d0555a; --crease: #213f55; --focus: #7db3f2;
+  --pill: #1a2b33; --pill-on: #e8f0f3; --pill-on-ink: #0b1418;
+  --heat0: 92, 38, 42; --heat1: 255, 118, 78;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.45; padding-inline: 16px; padding-block: 24px 40px; }
+.wrap { max-width: 1040px; margin: 0 auto; display: grid; gap: 20px; }
+header h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(30px, 6vw, 44px); line-height: 1; margin: 0 0 8px; letter-spacing: .01em; text-transform: uppercase; }
+header p { margin: 0; color: var(--ink2); max-width: 62ch; text-wrap: pretty; }
+.grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+@media (max-width: 760px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; min-width: 0; }
+.rinkbox { padding: 12px; }
+#stage { position: relative; aspect-ratio: 85 / 75; width: 100%; max-width: 100%; border-radius: 12px; outline-offset: 3px; cursor: crosshair; touch-action: none; user-select: none; }
+#stage:focus-visible { outline: 3px solid var(--focus); }
+#stage canvas, #stage svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+#stage svg { pointer-events: none; }
+.legend { display: flex; align-items: center; gap: 10px; margin-top: 10px; color: var(--muted); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.legend .ramp { flex: 1; height: 8px; border-radius: 4px; background: linear-gradient(90deg, rgba(var(--heat0), .25), rgba(var(--heat1), .95)); }
+.read { display: grid; gap: 12px; }
+.xg { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.xg .num { font-family: var(--font-display); font-weight: 700; font-size: clamp(56px, 11vw, 84px); line-height: .9; font-variant-numeric: tabular-nums; }
+.xg .lbl { font-family: var(--font-display); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-size: 15px; }
+.sub { color: var(--ink2); margin: 0; }
+.bar { position: relative; height: 10px; border-radius: 5px; background: var(--pill); }
+.bar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 5px; background: rgb(var(--heat1)); transition: width .15s; }
+.bar b { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--ink); }
+.barcap { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--muted); gap: 12px; }
+.facts { display: flex; gap: 22px; flex-wrap: wrap; font-variant-numeric: tabular-nums; }
+.facts div { display: grid; }
+.facts span { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.facts strong { font-family: var(--font-display); font-size: 24px; font-weight: 600; }
+fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+legend, .grouplbl { font-family: var(--font-display); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; font-size: 13px; color: var(--muted); padding: 0; margin-bottom: 6px; }
+.controls { display: grid; gap: 14px; }
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.seg button { font: inherit; font-size: 14px; border: 1px solid var(--line); background: var(--pill); color: var(--ink); border-radius: 999px; padding: 6px 12px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--pill-on); color: var(--pill-on-ink); border-color: var(--pill-on); font-weight: 600; }
+.seg button:focus-visible, summary:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.note { font-size: 13px; color: var(--muted); margin: 0; }
+.warn { font-size: 13px; color: var(--ink2); background: var(--pill); border-radius: 8px; padding: 8px 10px; margin: 0; }
+details { margin-top: 2px; }
+summary { cursor: pointer; font-family: var(--font-display); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; font-size: 13px; color: var(--muted); }
+.tbl { overflow-x: auto; margin-top: 8px; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 5px 8px 5px 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
+td:last-child, th:last-child { text-align: right; padding-right: 0; }
+th { font-weight: 500; color: var(--muted); }
+footer { color: var(--muted); font-size: 13px; max-width: 80ch; display: grid; gap: 6px; }
+footer a { color: var(--ink2); }
+@media (prefers-reduced-motion: reduce) { .bar i { transition: none; } }
+</style>
+<!--BODY-->
+<div class="wrap">
+  <header>
+    <h1>xG Shot Map</h1>
+    <p>Pick a spot in the offensive zone and a situation. The map shades every spot by the model's chance that the shot is a goal. Click, tap or use the arrow keys to move the marker.</p>
+  </header>
+  <div class="grid">
+    <section class="card rinkbox" aria-label="Offensive zone heat map">
+      <div id="stage" tabindex="0" role="application" aria-label="Offensive zone. Arrow keys move the shot location. The goal is at the top.">
+        <canvas id="heat"></canvas>
+        <svg id="rink" viewBox="0 0 85 75" preserveAspectRatio="none" aria-hidden="true">
+          <defs><clipPath id="clip"><path d="M0 75V28A28 28 0 0 1 28 0H57A28 28 0 0 1 85 28V75Z"/></clipPath></defs>
+          <g clip-path="url(#clip)" fill="none">
+            <path d="M36.5 11A6 6 0 0 0 48.5 11Z" fill="var(--crease)" fill-opacity=".55" stroke="var(--redline)" stroke-width=".35"/>
+            <circle cx="20.5" cy="31" r="15" stroke="var(--redline)" stroke-width=".3" stroke-opacity=".7"/>
+            <circle cx="64.5" cy="31" r="15" stroke="var(--redline)" stroke-width=".3" stroke-opacity=".7"/>
+            <circle cx="20.5" cy="31" r="1" fill="var(--redline)" fill-opacity=".8"/>
+            <circle cx="64.5" cy="31" r="1" fill="var(--redline)" fill-opacity=".8"/>
+            <line x1="0" y1="11" x2="85" y2="11" stroke="var(--redline)" stroke-width=".35"/>
+            <rect x="39.5" y="7.7" width="6" height="3.3" rx=".6" stroke="var(--ink2)" stroke-width=".3" fill="var(--ice)" fill-opacity=".6"/>
+            <rect x="0" y="73.8" width="85" height="1.2" fill="var(--blueline)" fill-opacity=".85"/>
+          </g>
+          <path d="M0 75V28A28 28 0 0 1 28 0H57A28 28 0 0 1 85 28V75" fill="none" stroke="var(--ink2)" stroke-width=".5" stroke-opacity=".7"/>
+          <g id="marker" hidden>
+            <circle r="2.1" fill="none" stroke="var(--ink)" stroke-width=".7"/>
+            <circle r=".7" fill="var(--ink)"/>
+            <text id="mlabel" y="-3.3" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="700" font-size="4.6" fill="var(--ink)" stroke="var(--ice)" stroke-width="1.1" paint-order="stroke"></text>
+          </g>
+        </svg>
+      </div>
+      <div class="legend"><span>0%</span><div class="ramp" title="Colour scale is compressed (square root) so lower-chance areas stay visible"></div><span id="pmax">0%</span><span>goal chance</span></div>
+    </section>
+
+    <div class="read">
+      <section class="card" aria-live="polite">
+        <div class="xg"><span class="num" id="xg">0%</span><span class="lbl">chance of a goal</span></div>
+        <p class="sub" id="oneIn" style="margin-top:8px"></p>
+        <div class="bar" style="margin-top:14px" aria-hidden="true"><i id="barfill"></i><b id="bartick"></b></div>
+        <div class="barcap"><span id="vsAvg"></span><span>tick = average shot attempt</span></div>
+        <div class="facts" style="margin-top:14px">
+          <div><span>Distance</span><strong id="dist">0 ft</strong></div>
+          <div><span>Angle</span><strong id="ang">0°</strong></div>
+        </div>
+      </section>
+
+      <section class="card controls">
+        <fieldset><legend>Shot type</legend><div class="seg" id="types"></div></fieldset>
+        <fieldset><legend>Situation</legend><div class="seg" id="strengths"></div></fieldset>
+        <fieldset><legend>Shot context</legend>
+          <div class="seg" id="flags"></div>
+          <p class="note" style="margin-top:6px">Rebound: a second shot within about 3 seconds. Rush: off a quick transition.</p>
+        </fieldset>
+        <p class="warn" id="thin" hidden>Few real shots match this exact combination, so the model leans on similar situations here.</p>
+        <details>
+          <summary>Values at common spots</summary>
+          <div class="tbl"><table><thead><tr><th>Spot</th><th>Goal chance</th></tr></thead><tbody id="spots"></tbody></table></div>
+        </details>
+      </section>
+    </div>
+  </div>
+  <footer>
+    <span>Model: gradient boosting (XGBoost) trained on <span id="nshots"></span> NHL shot attempts from the 2023 to 2025 seasons (<a href="https://moneypuck.com/data.htm">MoneyPuck data</a>). Held-out seasons score AUC 0.81. All other inputs stay at typical values for the chosen situation, and the rebound and rush flags also shift the model's related inputs.</span>
+    <span>TabPFN-3.5 reaches the same level on this task (AUC 0.80 from 100k training rows). Code and results: <a href="https://github.com/vilhohelenius/xGoalBoost-tabpfn">xGoalBoost-tabpfn</a>.</span>
+  </footer>
+</div>
+
+<script>
+const D = /*__DATA__*/null;
+(function () {
+  const NX = D.xs.length, NY = D.ys.length, S = D.strengths.length;
+  const raw = Uint8Array.from(atob(D.data), c => c.charCodeAt(0));
+  const dv = new DataView(raw.buffer);
+  const TYPE_LABEL = { WRIST: "Wrist", SNAP: "Snap", SLAP: "Slap", BACK: "Backhand", TIP: "Tip-in", DEFL: "Deflection", WRAP: "Wrap-around" };
+  const STR_LABEL = { "5v5": "5 v 5", "5v4": "Power play", "4v5": "Short-handed", "3v3": "3 v 3", "empty": "Empty net" };
+  let pmCache = 0.05;
+  const state = { t: 0, s: 0, reb: 0, rush: 0, x: 80, y: 6 };
+  const $ = id => document.getElementById(id);
+  const thin = new Set(D.thin.map(a => a.join("|")));
+
+  const scn = () => ((state.t * S + state.s) * 2 + state.reb) * 2 + state.rush;
+  const cell = (si, xi, yi) => dv.getUint16((si * NX * NY + xi * NY + yi) * 2, true) / 1000;
+  function value(x, y, si = scn()) {
+    const fx = Math.min(Math.max((x - D.xs[0]) / 2, 0), NX - 1), fy = Math.min(Math.max(Math.abs(y) / 2, 0), NY - 1);
+    const x0 = Math.floor(fx), y0 = Math.floor(fy), x1 = Math.min(x0 + 1, NX - 1), y1 = Math.min(y0 + 1, NY - 1), ax = fx - x0, ay = fy - y0;
+    return (cell(si, x0, y0) * (1 - ax) + cell(si, x1, y0) * ax) * (1 - ay) + (cell(si, x0, y1) * (1 - ax) + cell(si, x1, y1) * ax) * ay;
+  }
+  function scnMax(si) {
+    let m = 0; const o = si * NX * NY;
+    for (let i = 0; i < NX * NY; i++) m = Math.max(m, dv.getUint16((o + i) * 2, true));
+    return Math.max(m / 1000, 0.05);
+  }
+  const pct = p => (p * 100).toFixed(p < 0.1 ? 1 : 0) + "%";
+
+  // controls
+  function seg(el, items, get, set) {
+    el.innerHTML = "";
+    items.forEach((label, i) => {
+      const b = document.createElement("button"); b.type = "button"; b.textContent = label;
+      b.addEventListener("click", () => { set(i); update(); });
+      b.dataset.i = i; el.appendChild(b);
+    });
+    el._get = get;
+  }
+  seg($("types"), D.types.map(t => TYPE_LABEL[t]), () => state.t, i => state.t = i);
+  seg($("strengths"), D.strengths.map(s => STR_LABEL[s]), () => state.s, i => state.s = i);
+  seg($("flags"), ["Rebound", "Rush"], null, i => { if (i === 0) state.reb ^= 1; else state.rush ^= 1; });
+  function syncSeg() {
+    [["types", i => i === state.t], ["strengths", i => i === state.s], ["flags", i => i === 0 ? !!state.reb : !!state.rush]].forEach(([id, on]) => {
+      [...$(id).children].forEach(b => b.setAttribute("aria-pressed", on(+b.dataset.i)));
+    });
+  }
+
+  // canvas
+  const stage = $("stage"), cv = $("heat"), ctx = cv.getContext("2d");
+  const off = document.createElement("canvas"); off.width = 2 * NY - 1; off.height = NX;
+  const octx = off.getContext("2d");
+  function rgbVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).split(",").map(Number); }
+  function drawHeat() {
+    const dpr = window.devicePixelRatio || 1, w = stage.clientWidth, h = stage.clientHeight;
+    if (!w) return;
+    cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+    const si = scn(), pm = scnMax(si), c0 = rgbVar("--heat0"), c1 = rgbVar("--heat1");
+    const img = octx.createImageData(off.width, off.height);
+    for (let py = 0; py < NX; py++) for (let px = 0; px < off.width; px++) {
+      const yi = Math.abs(px - (NY - 1)), xi = NX - 1 - py;
+      const t = Math.sqrt(Math.min(cell(si, xi, yi) / pm, 1)), o = (py * off.width + px) * 4;
+      for (let k = 0; k < 3; k++) img.data[o + k] = c0[k] + (c1[k] - c0[k]) * t;
+      img.data[o + 3] = Math.round(255 * (0.1 + 0.85 * t));
+    }
+    octx.putImageData(img, 0, 0);
+    ctx.setTransform(cv.width / 85, 0, 0, cv.height / 75, 0, 0);
+    ctx.clearRect(0, 0, 85, 75);
+    ctx.save();
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue("--ice");
+    const clip = new Path2D("M0 75V28A28 28 0 0 1 28 0H57A28 28 0 0 1 85 28V75Z");
+    ctx.clip(clip); ctx.fillRect(0, 0, 85, 75);
+    ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(off, -0.5, 0, 86, 76);
+    ctx.restore();
+    $("pmax").textContent = pct(pm);
+    pmCache = pm;
+    return pm;
+  }
+
+  // readout
+  function readout(pm) {
+    const p = value(state.x, state.y), dist = Math.hypot(D.goalX - state.x, state.y);
+    const ang = Math.min(90, Math.atan2(Math.abs(state.y), Math.max(D.goalX - state.x, 0.5)) * 180 / Math.PI);
+    $("xg").textContent = pct(p);
+    $("oneIn").textContent = p > 0.002 ? (p >= 0.5 ? "Roughly " + Math.round(p * 100) + " goals from every 100 shots like this." : "About 1 goal for every " + Math.round(1 / p) + " shots like this.") : "Almost never a goal.";
+    const top = Math.max(pm, D.base * 1.3);
+    $("barfill").style.width = Math.min(p / top, 1) * 100 + "%";
+    $("bartick").style.left = (D.base / top) * 100 + "%";
+    const r = p / D.base;
+    $("vsAvg").textContent = r >= 1.05 ? r.toFixed(1) + "x the average" : r <= 0.95 ? Math.round((1 - r) * 100) + "% below average" : "About average";
+    $("dist").textContent = Math.round(dist) + " ft";
+    $("ang").textContent = Math.round(ang) + "°";
+    const m = $("marker"); m.hidden = false;
+    const sx = state.y + 42.5, sy = 100 - state.x;
+    m.setAttribute("transform", `translate(${sx} ${sy})`);
+    $("mlabel").textContent = pct(p);
+    $("mlabel").setAttribute("transform", sy < 8 ? "translate(0 9.5)" : "");
+    $("mlabel").setAttribute("x", sx < 10 ? 5 : sx > 75 ? -5 : 0);
+    $("thin").hidden = !thin.has([D.types[state.t], D.strengths[state.s], state.reb, state.rush].join("|"));
+    const spots = [["Crease front", 85, 0], ["Slot", 76, 0], ["Faceoff dot", 69, 22], ["Half wall", 62, 38], ["Point", 55, 20], ["Blue line", 30, 0]];
+    $("spots").innerHTML = spots.map(([n, x, y]) => `<tr><td>${n}</td><td>${pct(value(x, y))}</td></tr>`).join("");
+  }
+  function update() { syncSeg(); readout(drawHeat() || 0.05); }
+
+  // pointer and keyboard
+  function setFromEvent(e) {
+    const r = stage.getBoundingClientRect();
+    const sx = (e.clientX - r.left) / r.width * 85, sy = (e.clientY - r.top) / r.height * 75;
+    state.y = Math.round(Math.min(Math.max(sx - 42.5, -42), 42) * 2) / 2;
+    state.x = Math.round(Math.min(Math.max(100 - sy, D.xs[0]), D.xs[NX - 1]) * 2) / 2;
+    readout(pmCache);
+  }
+  let down = false;
+  stage.addEventListener("pointerdown", e => { down = true; stage.setPointerCapture(e.pointerId); setFromEvent(e); });
+  stage.addEventListener("pointermove", e => { if (down || e.pointerType === "mouse") setFromEvent(e); });
+  stage.addEventListener("pointerup", () => { down = false; });
+  stage.addEventListener("keydown", e => {
+    const st = e.shiftKey ? 6 : 2, k = { ArrowLeft: [0, -st], ArrowRight: [0, st], ArrowUp: [st, 0], ArrowDown: [-st, 0] }[e.key];
+    if (!k) return; e.preventDefault();
+    state.x = Math.min(Math.max(state.x + k[0], D.xs[0]), D.xs[NX - 1]); state.y = Math.min(Math.max(state.y + k[1], -42), 42);
+    readout(pmCache);
+  });
+
+  $("nshots").textContent = D.shots.toLocaleString("en-US");
+  new ResizeObserver(() => { const v = drawHeat(); if (v) readout(v); }).observe(stage);
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", update);
+  new MutationObserver(update).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  update();
+})();
+</script>
