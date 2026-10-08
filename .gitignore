@@ -6,3 +6,5 @@ shots_*.csv
 .env
 data/pbp/
 data/*.parquet
+data/nhl_standings.json
+data/schedule_*.json
