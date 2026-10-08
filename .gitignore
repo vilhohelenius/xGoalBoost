@@ -8,3 +8,4 @@ data/pbp/
 data/*.parquet
 data/nhl_standings.json
 data/schedule_*.json
+data/standings_final_*.json

@@ -1,9 +1,9 @@
 {
  "season": 20262027,
  "asOf": "2026-10-08",
- "sims": 100000,
+ "sims": 20000,
  "games_remaining": 1289,
- "horizon_days": 120,
+ "horizon_days": 80,
  "teams": [
   {
    "team": "TBL",
@@ -12,12 +12,12 @@
    "div": "A",
    "gp": 3,
    "pts": 4,
-   "exp_pts": 104.4000015258789,
-   "pts_p10": 94.0,
-   "pts_p90": 115.0,
-   "p_playoffs": 0.8884,
-   "p_division": 0.4044,
-   "p_presidents": 0.1395
+   "exp_pts": 102.9,
+   "pts_p10": 92.0,
+   "pts_p90": 113.0,
+   "p_playoffs": 0.8544,
+   "p_division": 0.3632,
+   "p_presidents": 0.1248
   },
   {
    "team": "CAR",
@@ -26,12 +26,12 @@
    "div": "M",
    "gp": 4,
    "pts": 5,
-   "exp_pts": 102.80000305175781,
-   "pts_p10": 92.0,
-   "pts_p90": 113.0,
-   "p_playoffs": 0.8571,
-   "p_division": 0.4316,
-   "p_presidents": 0.0972
+   "exp_pts": 101.7,
+   "pts_p10": 91.0,
+   "pts_p90": 112.0,
+   "p_playoffs": 0.8282,
+   "p_division": 0.394,
+   "p_presidents": 0.0941
   },
   {
    "team": "BUF",
@@ -40,12 +40,12 @@
    "div": "A",
    "gp": 3,
    "pts": 4,
-   "exp_pts": 100.4000015258789,
-   "pts_p10": 90.0,
-   "pts_p90": 111.0,
-   "p_playoffs": 0.7651,
-   "p_division": 0.2121,
-   "p_presidents": 0.0603
+   "exp_pts": 99.5,
+   "pts_p10": 89.0,
+   "pts_p90": 110.0,
+   "p_playoffs": 0.7364,
+   "p_division": 0.2097,
+   "p_presidents": 0.0612
   },
   {
    "team": "OTT",
@@ -54,26 +54,12 @@
    "div": "A",
    "gp": 3,
    "pts": 4,
-   "exp_pts": 99.5,
-   "pts_p10": 89.0,
+   "exp_pts": 98.8,
+   "pts_p10": 88.0,
    "pts_p90": 110.0,
-   "p_playoffs": 0.7336,
-   "p_division": 0.1826,
-   "p_presidents": 0.0494
-  },
-  {
-   "team": "CBJ",
-   "name": "Columbus Blue Jackets",
-   "conf": "E",
-   "div": "M",
-   "gp": 2,
-   "pts": 2,
-   "exp_pts": 95.30000305175781,
-   "pts_p10": 84.0,
-   "pts_p90": 106.0,
-   "p_playoffs": 0.5596,
-   "p_division": 0.1275,
-   "p_presidents": 0.0174
+   "p_playoffs": 0.7123,
+   "p_division": 0.1878,
+   "p_presidents": 0.054
   },
   {
    "team": "NYR",
@@ -82,12 +68,26 @@
    "div": "M",
    "gp": 5,
    "pts": 8,
-   "exp_pts": 94.9000015258789,
+   "exp_pts": 95.0,
    "pts_p10": 84.0,
-   "pts_p90": 105.0,
-   "p_playoffs": 0.5411,
-   "p_division": 0.1158,
-   "p_presidents": 0.0148
+   "pts_p90": 106.0,
+   "p_playoffs": 0.5556,
+   "p_division": 0.1281,
+   "p_presidents": 0.019
+  },
+  {
+   "team": "CBJ",
+   "name": "Columbus Blue Jackets",
+   "conf": "E",
+   "div": "M",
+   "gp": 2,
+   "pts": 2,
+   "exp_pts": 94.9,
+   "pts_p10": 84.0,
+   "pts_p90": 106.0,
+   "p_playoffs": 0.5462,
+   "p_division": 0.1293,
+   "p_presidents": 0.0205
   },
   {
    "team": "WSH",
@@ -96,12 +96,12 @@
    "div": "M",
    "gp": 3,
    "pts": 4,
-   "exp_pts": 94.69999694824219,
+   "exp_pts": 94.6,
    "pts_p10": 84.0,
    "pts_p90": 105.0,
-   "p_playoffs": 0.5334,
-   "p_division": 0.1138,
-   "p_presidents": 0.0139
+   "p_playoffs": 0.5342,
+   "p_division": 0.117,
+   "p_presidents": 0.0171
   },
   {
    "team": "MTL",
@@ -110,12 +110,12 @@
    "div": "A",
    "gp": 3,
    "pts": 3,
-   "exp_pts": 94.5999984741211,
+   "exp_pts": 94.4,
    "pts_p10": 84.0,
    "pts_p90": 105.0,
-   "p_playoffs": 0.5102,
-   "p_division": 0.0705,
-   "p_presidents": 0.0142
+   "p_playoffs": 0.5088,
+   "p_division": 0.0774,
+   "p_presidents": 0.0168
   },
   {
    "team": "PIT",
@@ -124,12 +124,12 @@
    "div": "M",
    "gp": 4,
    "pts": 4,
-   "exp_pts": 93.0,
+   "exp_pts": 92.9,
    "pts_p10": 82.0,
-   "pts_p90": 104.0,
-   "p_playoffs": 0.4433,
-   "p_division": 0.079,
-   "p_presidents": 0.0083
+   "pts_p90": 103.0,
+   "p_playoffs": 0.4463,
+   "p_division": 0.0847,
+   "p_presidents": 0.0104
   },
   {
    "team": "BOS",
@@ -141,9 +141,23 @@
    "exp_pts": 92.5,
    "pts_p10": 82.0,
    "pts_p90": 103.0,
-   "p_playoffs": 0.4066,
-   "p_division": 0.0444,
-   "p_presidents": 0.0073
+   "p_playoffs": 0.4155,
+   "p_division": 0.0524,
+   "p_presidents": 0.0102
+  },
+  {
+   "team": "FLA",
+   "name": "Florida Panthers",
+   "conf": "E",
+   "div": "A",
+   "gp": 4,
+   "pts": 6,
+   "exp_pts": 92.6,
+   "pts_p10": 82.0,
+   "pts_p90": 103.0,
+   "p_playoffs": 0.4079,
+   "p_division": 0.0538,
+   "p_presidents": 0.01
   },
   {
    "team": "NYI",
@@ -155,9 +169,9 @@
    "exp_pts": 92.0,
    "pts_p10": 81.0,
    "pts_p90": 103.0,
-   "p_playoffs": 0.4032,
-   "p_division": 0.0652,
-   "p_presidents": 0.0068
+   "p_playoffs": 0.406,
+   "p_division": 0.073,
+   "p_presidents": 0.0102
   },
   {
    "team": "NJD",
@@ -166,12 +180,12 @@
    "div": "M",
    "gp": 3,
    "pts": 2,
-   "exp_pts": 91.80000305175781,
+   "exp_pts": 91.9,
    "pts_p10": 81.0,
    "pts_p90": 103.0,
-   "p_playoffs": 0.3912,
-   "p_division": 0.0608,
-   "p_presidents": 0.0061
+   "p_playoffs": 0.3992,
+   "p_division": 0.0652,
+   "p_presidents": 0.0074
   },
   {
    "team": "DET",
@@ -180,26 +194,12 @@
    "div": "A",
    "gp": 3,
    "pts": 2,
-   "exp_pts": 91.9000015258789,
+   "exp_pts": 92.0,
    "pts_p10": 81.0,
    "pts_p90": 103.0,
-   "p_playoffs": 0.3845,
-   "p_division": 0.0392,
-   "p_presidents": 0.006
-  },
-  {
-   "team": "FLA",
-   "name": "Florida Panthers",
-   "conf": "E",
-   "div": "A",
-   "gp": 4,
-   "pts": 6,
-   "exp_pts": 92.19999694824219,
-   "pts_p10": 81.0,
-   "pts_p90": 103.0,
-   "p_playoffs": 0.3834,
-   "p_division": 0.0413,
-   "p_presidents": 0.0069
+   "p_playoffs": 0.3946,
+   "p_division": 0.0466,
+   "p_presidents": 0.0078
   },
   {
    "team": "TOR",
@@ -208,12 +208,12 @@
    "div": "A",
    "gp": 4,
    "pts": 4,
-   "exp_pts": 84.19999694824219,
-   "pts_p10": 73.0,
-   "pts_p90": 95.0,
-   "p_playoffs": 0.1081,
-   "p_division": 0.0054,
-   "p_presidents": 0.0005
+   "exp_pts": 85.4,
+   "pts_p10": 75.0,
+   "pts_p90": 96.0,
+   "p_playoffs": 0.141,
+   "p_division": 0.0092,
+   "p_presidents": 0.001
   },
   {
    "team": "PHI",
@@ -222,12 +222,12 @@
    "div": "M",
    "gp": 4,
    "pts": 2,
-   "exp_pts": 83.0,
-   "pts_p10": 72.0,
-   "pts_p90": 94.0,
-   "p_playoffs": 0.091,
-   "p_division": 0.0063,
-   "p_presidents": 0.0002
+   "exp_pts": 84.0,
+   "pts_p10": 73.0,
+   "pts_p90": 95.0,
+   "p_playoffs": 0.1134,
+   "p_division": 0.0087,
+   "p_presidents": 0.0004
   },
   {
    "team": "COL",
@@ -236,12 +236,12 @@
    "div": "C",
    "gp": 3,
    "pts": 4,
-   "exp_pts": 107.19999694824219,
-   "pts_p10": 97.0,
-   "pts_p90": 118.0,
-   "p_playoffs": 0.9547,
-   "p_division": 0.4922,
-   "p_presidents": 0.2358
+   "exp_pts": 105.3,
+   "pts_p10": 95.0,
+   "pts_p90": 116.0,
+   "p_playoffs": 0.9274,
+   "p_division": 0.4392,
+   "p_presidents": 0.2007
   },
   {
    "team": "VGK",
@@ -250,12 +250,12 @@
    "div": "P",
    "gp": 4,
    "pts": 6,
-   "exp_pts": 101.19999694824219,
-   "pts_p10": 91.0,
-   "pts_p90": 112.0,
-   "p_playoffs": 0.8694,
-   "p_division": 0.405,
-   "p_presidents": 0.0741
+   "exp_pts": 100.3,
+   "pts_p10": 90.0,
+   "pts_p90": 111.0,
+   "p_playoffs": 0.8443,
+   "p_division": 0.374,
+   "p_presidents": 0.0711
   },
   {
    "team": "EDM",
@@ -264,12 +264,12 @@
    "div": "P",
    "gp": 4,
    "pts": 7,
-   "exp_pts": 99.0,
+   "exp_pts": 98.6,
    "pts_p10": 88.0,
-   "pts_p90": 110.0,
-   "p_playoffs": 0.8044,
-   "p_division": 0.2899,
-   "p_presidents": 0.0437
+   "pts_p90": 109.0,
+   "p_playoffs": 0.7889,
+   "p_division": 0.2906,
+   "p_presidents": 0.0486
   },
   {
    "team": "MIN",
@@ -278,12 +278,12 @@
    "div": "C",
    "gp": 3,
    "pts": 5,
-   "exp_pts": 100.0,
+   "exp_pts": 99.4,
    "pts_p10": 89.0,
-   "pts_p90": 111.0,
-   "p_playoffs": 0.8002,
-   "p_division": 0.1571,
-   "p_presidents": 0.0569
+   "pts_p90": 110.0,
+   "p_playoffs": 0.7799,
+   "p_division": 0.1678,
+   "p_presidents": 0.0577
   },
   {
    "team": "DAL",
@@ -292,12 +292,12 @@
    "div": "C",
    "gp": 3,
    "pts": 2,
-   "exp_pts": 99.69999694824219,
-   "pts_p10": 89.0,
-   "pts_p90": 110.0,
-   "p_playoffs": 0.7943,
-   "p_division": 0.1457,
-   "p_presidents": 0.0516
+   "exp_pts": 98.6,
+   "pts_p10": 88.0,
+   "pts_p90": 109.0,
+   "p_playoffs": 0.7556,
+   "p_division": 0.1462,
+   "p_presidents": 0.0496
   },
   {
    "team": "UTA",
@@ -306,12 +306,12 @@
    "div": "C",
    "gp": 4,
    "pts": 6,
-   "exp_pts": 99.0999984741211,
+   "exp_pts": 98.5,
    "pts_p10": 88.0,
-   "pts_p90": 110.0,
-   "p_playoffs": 0.7705,
-   "p_division": 0.1322,
-   "p_presidents": 0.0455
+   "pts_p90": 109.0,
+   "p_playoffs": 0.7464,
+   "p_division": 0.147,
+   "p_presidents": 0.0503
   },
   {
    "team": "ANA",
@@ -320,12 +320,12 @@
    "div": "P",
    "gp": 3,
    "pts": 4,
-   "exp_pts": 95.19999694824219,
+   "exp_pts": 95.1,
    "pts_p10": 84.0,
    "pts_p90": 106.0,
-   "p_playoffs": 0.6467,
-   "p_division": 0.149,
-   "p_presidents": 0.0161
+   "p_playoffs": 0.6396,
+   "p_division": 0.1551,
+   "p_presidents": 0.0198
   },
   {
    "team": "LAK",
@@ -334,12 +334,12 @@
    "div": "P",
    "gp": 3,
    "pts": 1,
-   "exp_pts": 93.0999984741211,
+   "exp_pts": 92.7,
    "pts_p10": 82.0,
-   "pts_p90": 104.0,
-   "p_playoffs": 0.5479,
+   "pts_p90": 103.0,
+   "p_playoffs": 0.5258,
    "p_division": 0.1012,
-   "p_presidents": 0.0082
+   "p_presidents": 0.0097
   },
   {
    "team": "STL",
@@ -348,12 +348,12 @@
    "div": "C",
    "gp": 3,
    "pts": 2,
-   "exp_pts": 92.80000305175781,
+   "exp_pts": 92.7,
    "pts_p10": 82.0,
-   "pts_p90": 103.0,
-   "p_playoffs": 0.4864,
-   "p_division": 0.0349,
-   "p_presidents": 0.009
+   "pts_p90": 104.0,
+   "p_playoffs": 0.4828,
+   "p_division": 0.0446,
+   "p_presidents": 0.0111
   },
   {
    "team": "WPG",
@@ -362,12 +362,12 @@
    "div": "C",
    "gp": 4,
    "pts": 7,
-   "exp_pts": 92.30000305175781,
+   "exp_pts": 92.7,
    "pts_p10": 82.0,
    "pts_p90": 103.0,
-   "p_playoffs": 0.4582,
-   "p_division": 0.0308,
-   "p_presidents": 0.0071
+   "p_playoffs": 0.4784,
+   "p_division": 0.0425,
+   "p_presidents": 0.0106
   },
   {
    "team": "SEA",
@@ -376,12 +376,12 @@
    "div": "P",
    "gp": 4,
    "pts": 4,
-   "exp_pts": 87.0999984741211,
-   "pts_p10": 76.0,
-   "pts_p90": 98.0,
-   "p_playoffs": 0.271,
-   "p_division": 0.0278,
-   "p_presidents": 0.0012
+   "exp_pts": 87.9,
+   "pts_p10": 77.0,
+   "pts_p90": 99.0,
+   "p_playoffs": 0.2996,
+   "p_division": 0.037,
+   "p_presidents": 0.0023
   },
   {
    "team": "SJS",
@@ -390,12 +390,12 @@
    "div": "P",
    "gp": 3,
    "pts": 4,
-   "exp_pts": 85.4000015258789,
-   "pts_p10": 75.0,
-   "pts_p90": 96.0,
-   "p_playoffs": 0.2011,
-   "p_division": 0.0178,
-   "p_presidents": 0.0006
+   "exp_pts": 86.6,
+   "pts_p10": 76.0,
+   "pts_p90": 97.0,
+   "p_playoffs": 0.2406,
+   "p_division": 0.0273,
+   "p_presidents": 0.0018
   },
   {
    "team": "NSH",
@@ -404,12 +404,12 @@
    "div": "C",
    "gp": 3,
    "pts": 3,
-   "exp_pts": 86.4000015258789,
-   "pts_p10": 76.0,
-   "pts_p90": 97.0,
-   "p_playoffs": 0.2002,
-   "p_division": 0.0065,
-   "p_presidents": 0.001
+   "exp_pts": 87.1,
+   "pts_p10": 77.0,
+   "pts_p90": 98.0,
+   "p_playoffs": 0.2287,
+   "p_division": 0.0111,
+   "p_presidents": 0.0014
   },
   {
    "team": "CGY",
@@ -418,26 +418,12 @@
    "div": "P",
    "gp": 3,
    "pts": 0,
-   "exp_pts": 82.0,
-   "pts_p10": 71.0,
-   "pts_p90": 93.0,
-   "p_playoffs": 0.1129,
-   "p_division": 0.0077,
-   "p_presidents": 0.0003
-  },
-  {
-   "team": "CHI",
-   "name": "Chicago Blackhawks",
-   "conf": "W",
-   "div": "C",
-   "gp": 4,
-   "pts": 2,
-   "exp_pts": 78.80000305175781,
-   "pts_p10": 68.0,
-   "pts_p90": 89.0,
-   "p_playoffs": 0.0432,
-   "p_division": 0.0006,
-   "p_presidents": 0.0
+   "exp_pts": 83.1,
+   "pts_p10": 72.0,
+   "pts_p90": 94.0,
+   "p_playoffs": 0.1346,
+   "p_division": 0.0108,
+   "p_presidents": 0.0005
   },
   {
    "team": "VAN",
@@ -446,11 +432,25 @@
    "div": "P",
    "gp": 4,
    "pts": 4,
-   "exp_pts": 77.4000015258789,
-   "pts_p10": 67.0,
-   "pts_p90": 88.0,
-   "p_playoffs": 0.039,
-   "p_division": 0.0015,
+   "exp_pts": 79.5,
+   "pts_p10": 69.0,
+   "pts_p90": 90.0,
+   "p_playoffs": 0.0638,
+   "p_division": 0.004,
+   "p_presidents": 0.0001
+  },
+  {
+   "team": "CHI",
+   "name": "Chicago Blackhawks",
+   "conf": "W",
+   "div": "C",
+   "gp": 4,
+   "pts": 2,
+   "exp_pts": 80.5,
+   "pts_p10": 70.0,
+   "pts_p90": 91.0,
+   "p_playoffs": 0.0636,
+   "p_division": 0.0016,
    "p_presidents": 0.0
   }
  ]

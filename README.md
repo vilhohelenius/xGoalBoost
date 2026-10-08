@@ -90,3 +90,9 @@ Walk-forward backtest (each season predicted by a model trained on earlier seaso
 Baselines (mean): constant home rate 0.6906, Elo 0.6684, this model 0.6580 (AUC 0.642). 2025-26 was an unusually even season (points-% persistence r=0.43 vs 0.7 in 2021-25). Component weights in the final model: ability 16 %, chances 54 %, goalie 14 %, context 16 %.
 
 Run: `python nhl_pbp/download.py 2017 ... 2025`, `python winprob/build_games.py`, `python winprob/train_wp.py` (writes `winprob/model_wp.json`).
+
+### Season simulator (`winprob/simulate_season.py`)
+
+Simulates the rest of the regular season 100 000 times from the pre-game probabilities (OT/SO split, RW/ROW tiebreaks, 3+3+2 wild-card format) and writes playoff, division and Presidents' Trophy probabilities to `winprob/season_sim.json`. Predictions for later games are shrunk towards home advantage by `1 / (1 + days / H)`; `H = 80` days was fitted by `winprob/backtest_horizon.py` (walk-forward, 2020-21 to 2025-26). Per-game log loss prefers almost no shrinkage, but season-level playoff probabilities are overconfident without it (e.g. predicted 95-100 % -> actual 94.5 %, predicted 5-15 % -> actual 26 %), and H = 80 is well calibrated. Treat it as a stand-in for uncertainty in team strength, based on five seasons.
+
+Tested alternative (`backtest_horizon.py --teamfx`): instead of shrinking, draw a random team-strength offset per simulation (logit sd sigma, constant over the season). It improves the unshrunk simulator (Brier 0.1357 -> 0.1313 at sigma 0.3, and points RMSE 9.0 vs 9.5 with shrinkage) but does not beat shrinkage (Brier 0.1295, log loss 0.394 vs 0.401), and combining the two is worse than either alone. Shrinkage stays the default; `simulate(..., team_sigma=...)` in `simcore.py` is available.
