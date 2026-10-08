@@ -5,3 +5,4 @@ shots_*.csv
 *.cbm
 .env
 data/pbp/
+data/*.parquet
