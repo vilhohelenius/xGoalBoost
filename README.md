@@ -4,7 +4,7 @@ Expected-goals (xG) model for NHL shots: gradient boosting (XGBoost, CatBoost) a
 [MoneyPuck](https://moneypuck.com/data.htm) shot data for seasons 2023–2025 (+ the start of 2026).
 
 This is the full working repo. A trimmed, runnable submission for the TabPFN-3.5 hackathon lives in
-`xGoalBoost-tabpfn`.
+`xGoalBoost-tabpfn`. The results from the model are used in my NHL scores & stats app Morning Hockey (https://github.com/vilhohelenius/morning-hockey/)
 
 ## Results
 
