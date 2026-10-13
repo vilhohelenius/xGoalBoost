@@ -7,8 +7,11 @@ Ajo: .venv/bin/python analysis/penalty_leakage.py
 import glob
 import numpy as np
 import pandas as pd
+import os
 
-df = pd.concat([pd.read_csv(f) for f in sorted(glob.glob("shots_*.csv"))], ignore_index=True)
+DATA = os.environ.get("XG_DATA", "data")  # Databricksissa: Volume-polku
+
+df = pd.concat([pd.read_csv(f) for f in sorted(glob.glob(f"{DATA}/shots_*.csv"))], ignore_index=True)
 home = df.isHomeTeam == 1
 shooter = np.where(home, df.homeSkatersOnIce, df.awaySkatersOnIce)
 defender = np.where(home, df.awaySkatersOnIce, df.homeSkatersOnIce)

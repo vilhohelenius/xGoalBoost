@@ -8,30 +8,33 @@ import json
 import pathlib
 
 import pandas as pd
+import os
 
-shots = pd.read_parquet("data/nhl_shots.parquet")
+DATA = os.environ.get("XG_DATA", "data")  # Databricksissa: Volume-polku
+
+shots = pd.read_parquet(f"{DATA}/nhl_shots.parquet")
 names = {}
-for f in pathlib.Path("data/pbp").glob("*.json"):
+for f in pathlib.Path(f"{DATA}/pbp").glob("*.json"):
     for r in json.loads(f.read_text()).get("rosterSpots", []):
         names[r["playerId"]] = f'{r["firstName"]["default"]} {r["lastName"]["default"]}'
 
-sk = shots.merge(pd.read_parquet("data/oof_skater.parquet"), on=["gameId", "eventId"])
+sk = shots.merge(pd.read_parquet(f"{DATA}/oof_skater.parquet"), on=["gameId", "eventId"])
 sg = sk[sk.shooterId.notna()].groupby(["season", "gameId", "date", "shooterId", "teamId"]).agg(
     shots=("goal", "size"), onGoal=("onGoal", "sum"), goals=("goal", "sum"), xG=("xg", "sum")).reset_index()
 sg["name"] = sg.shooterId.map(names)
-sg.round(3).to_csv("data/skater_game_xg.csv", index=False)
+sg.round(3).to_csv(f"{DATA}/skater_game_xg.csv", index=False)
 ss = sg.groupby(["season", "shooterId", "name"]).agg(games=("gameId", "nunique"), shots=("shots", "sum"), goals=("goals", "sum"), xG=("xG", "sum")).reset_index()
 ss["goalsMinusXG"] = ss.goals - ss.xG
-ss.round(3).to_csv("data/skater_season_xg.csv", index=False)
+ss.round(3).to_csv(f"{DATA}/skater_season_xg.csv", index=False)
 
-gl = shots[(shots.onGoal == 1) & (shots.emptyNet == 0) & shots.goalieId.notna()].merge(pd.read_parquet("data/oof_goalie.parquet"), on=["gameId", "eventId"])
+gl = shots[(shots.onGoal == 1) & (shots.emptyNet == 0) & shots.goalieId.notna()].merge(pd.read_parquet(f"{DATA}/oof_goalie.parquet"), on=["gameId", "eventId"])
 gg = gl.groupby(["season", "gameId", "date", "goalieId", "oppId"]).agg(shotsAgainst=("goal", "size"), goalsAgainst=("goal", "sum"), xGA=("xg", "sum")).reset_index()
 gg["GSAx"] = gg.xGA - gg.goalsAgainst
 gg["name"] = gg.goalieId.map(names)
-gg.round(3).to_csv("data/goalie_game_xg.csv", index=False)
+gg.round(3).to_csv(f"{DATA}/goalie_game_xg.csv", index=False)
 gs = gg.groupby(["season", "goalieId", "name"]).agg(games=("gameId", "nunique"), shotsAgainst=("shotsAgainst", "sum"), goalsAgainst=("goalsAgainst", "sum"), xGA=("xGA", "sum"), GSAx=("GSAx", "sum")).reset_index()
 gs["GSAx_per_100"] = gs.GSAx / gs.shotsAgainst * 100
-gs.round(3).to_csv("data/goalie_season_xg.csv", index=False)
+gs.round(3).to_csv(f"{DATA}/goalie_season_xg.csv", index=False)
 
 pd.set_option("display.width", 140)
 print("Top 8 pelaajaa, kausi 2024-25: maalit vs xG")

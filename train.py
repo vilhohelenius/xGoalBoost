@@ -10,6 +10,9 @@ import pandas as pd
 from catboost import CatBoostClassifier
 from sklearn.metrics import log_loss, roc_auc_score
 from xgboost import XGBClassifier
+import os
+
+DATA = os.environ.get("XG_DATA", "data")  # Databricksissa: Volume-polku
 
 TARGET = "goal"
 CATEGORICAL = [
@@ -45,7 +48,7 @@ NUMERIC = [
 
 
 def load():
-    df = pd.concat([pd.read_csv(f) for f in sorted(glob.glob("shots_*.csv"))], ignore_index=True)
+    df = pd.concat([pd.read_csv(f) for f in sorted(glob.glob(f"{DATA}/shots_*.csv"))], ignore_index=True)
     df["lastEventSameTeam"] = (df["lastEventTeam"] == df["team"]).astype(float)
     # lähtökohta ampujan joukkueen näkökulmaan
     home = df["isHomeTeam"] == 1

@@ -11,6 +11,9 @@ import pathlib
 
 import numpy as np
 import pandas as pd
+import os
+
+DATA = os.environ.get("XG_DATA", "data")  # Databricksissa: Volume-polku
 
 SHOT_EVENTS = {"shot-on-goal", "missed-shot", "goal"}
 CTX_EVENTS = {"faceoff", "hit", "giveaway", "takeaway", "shot-on-goal", "missed-shot", "blocked-shot", "goal"}
@@ -123,8 +126,8 @@ def build(paths):
 
 if __name__ == "__main__":
     import sys
-    files = sorted(pathlib.Path("data/pbp").glob("*.json"))
+    files = sorted(pathlib.Path(f"{DATA}/pbp").glob("*.json"))
     df = build(files)
-    df.to_parquet("data/nhl_shots.parquet")
+    df.to_parquet(f"{DATA}/nhl_shots.parquet")
     print(len(files), "peliä,", len(df), "laukausta, maaliprosentti", round(df.goal.mean(), 4), "| on-goal sh%", round(df[df.onGoal == 1].goal.mean(), 4))
     print(df.groupby("season").size())

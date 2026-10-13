@@ -16,15 +16,18 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import brier_score_loss, log_loss, roc_auc_score
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
+import os
+
+DATA = os.environ.get("XG_DATA", "data")  # Databricksissa: Volume-polku
 
 HALF_LIVES = (10, 40)               # joukkueen rullaavat keskiarvot, pelejä
 GOALIE_HALF_LIFE, GOALIE_PRIOR = 25, 800   # maalivahti: puoliintumisaika (esiintymiä), prioriksi 800 laukausta
 OFFSEASON_KEEP = 0.6                # kausivaihteessa osuus, joka säilyy edelliseltä kaudelta
 METRICS = ["win", "gd", "xgd", "xgd5", "sogd", "dz"]
 
-games = pd.read_parquet("data/wp_games.parquet").sort_values(["start", "gameId"]).reset_index(drop=True)
-tg = pd.read_parquet("data/wp_team_game.parquet").set_index(["gameId", "teamId"])
-gg = pd.read_parquet("data/wp_goalie_game.parquet")
+games = pd.read_parquet(f"{DATA}/wp_games.parquet").sort_values(["start", "gameId"]).reset_index(drop=True)
+tg = pd.read_parquet(f"{DATA}/wp_team_game.parquet").set_index(["gameId", "teamId"])
+gg = pd.read_parquet(f"{DATA}/wp_goalie_game.parquet")
 starter = gg.sort_values("shotsAgainst").groupby(["gameId", "teamId"]).tail(1).set_index(["gameId", "teamId"]).goalieId
 gby = {k: v for k, v in gg.groupby("gameId")}
 
@@ -99,7 +102,7 @@ for g in games.itertuples():
     elo[home] += d; elo[away] -= d
 
 df = pd.DataFrame(rows)
-df.to_parquet("data/wp_features.parquet")
+df.to_parquet(f"{DATA}/wp_features.parquet")
 
 GROUPS = {
     "ability": [f"win_{h}" for h in HALF_LIVES],

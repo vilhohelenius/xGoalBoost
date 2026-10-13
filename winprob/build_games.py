@@ -17,9 +17,12 @@ from xgboost import XGBClassifier
 
 sys.path.insert(0, "nhl_pbp")
 from features import CATEGORICAL, FEATURES, game_shots
+import os
+
+DATA = os.environ.get("XG_DATA", "data")  # Databricksissa: Volume-polku
 
 games, extra, shots = [], [], []
-files = sorted(pathlib.Path("data/pbp").glob("*.json"))
+files = sorted(pathlib.Path(f"{DATA}/pbp").glob("*.json"))
 for i, f in enumerate(files):
     d = json.loads(f.read_text())
     h, a = d["homeTeam"], d["awayTeam"]
@@ -49,7 +52,7 @@ sk.load_model("nhl_pbp/model_skater.json"); gl.load_model("nhl_pbp/model_goalie.
 sh["xg"] = sk.predict_proba(X)[:, 1]
 sh["xgg"] = gl.predict_proba(X)[:, 1]
 for fn, col in (("oof_skater", "xg"), ("oof_goalie", "xgg")):     # ärsyttävä mutta rehellinen: OOF kausille 2023-25
-    o = pd.read_parquet(f"data/{fn}.parquet").rename(columns={"xg": "_o"})
+    o = pd.read_parquet(f"{DATA}/{fn}.parquet").rename(columns={"xg": "_o"})
     sh = sh.merge(o, on=["gameId", "eventId"], how="left")
     sh[col] = sh["_o"].fillna(sh[col]); sh = sh.drop(columns="_o")
 
@@ -73,7 +76,7 @@ gg = gs.groupby(["gameId", "season", "date", "goalieId", "oppId"]).agg(
 gg["GSAx"] = gg.xGA - gg.goalsAgainst
 gg = gg.rename(columns={"oppId": "teamId"})        # laukauksen vastustaja = maalivahdin joukkue
 
-games.to_parquet("data/wp_games.parquet"); tgame.to_parquet("data/wp_team_game.parquet"); gg.to_parquet("data/wp_goalie_game.parquet")
+games.to_parquet(f"{DATA}/wp_games.parquet"); tgame.to_parquet(f"{DATA}/wp_team_game.parquet"); gg.to_parquet(f"{DATA}/wp_goalie_game.parquet")
 print(len(games), "ottelua;", len(tgame), "joukkuepeliä;", len(gg), "maalivahtipeliä")
 print(games.groupby("season").size().to_string())
 print("kotivoitto-%", ((games.homeGoals > games.awayGoals).mean()).round(4), "| jatkoaika/SO-%", (games.lastPeriod != "REG").mean().round(3))

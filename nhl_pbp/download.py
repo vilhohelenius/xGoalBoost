@@ -10,8 +10,11 @@ import time
 import urllib.error
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
+import os
 
-OUT = pathlib.Path("data/pbp")
+DATA = os.environ.get("XG_DATA", "data")  # Databricksissa: Volume-polku
+
+OUT = pathlib.Path(f"{DATA}/pbp")
 OUT.mkdir(parents=True, exist_ok=True)
 URL = "https://api-web.nhle.com/v1/gamecenter/{}/play-by-play"
 

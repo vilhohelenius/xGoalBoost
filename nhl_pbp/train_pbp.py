@@ -17,8 +17,11 @@ from xgboost import XGBClassifier
 
 sys.path.insert(0, "nhl_pbp")
 from features import CATEGORICAL, FEATURES
+import os
 
-df = pd.read_parquet("data/nhl_shots.parquet")
+DATA = os.environ.get("XG_DATA", "data")  # Databricksissa: Volume-polku
+
+df = pd.read_parquet(f"{DATA}/nhl_shots.parquet")
 cats = {c: sorted(df[c].unique()) for c in CATEGORICAL}
 json.dump({"features": FEATURES, "categories": cats}, open("nhl_pbp/model_meta.json", "w"), indent=1)
 
@@ -52,11 +55,11 @@ def run(name, d):
 
 sk = run("skater", df)
 gl = run("goalie", df[(df.onGoal == 1) & (df.emptyNet == 0) & df.goalieId.notna()])
-sk[["gameId", "eventId", "xg"]].to_parquet("data/oof_skater.parquet")
-gl[["gameId", "eventId", "xg"]].to_parquet("data/oof_goalie.parquet")
+sk[["gameId", "eventId", "xg"]].to_parquet(f"{DATA}/oof_skater.parquet")
+gl[["gameId", "eventId", "xg"]].to_parquet(f"{DATA}/oof_goalie.parquet")
 
 # --- validointi MoneyPuckia vastaan (kausi 2023-25), pelaajakohtaiset kokonaisxG:t
-mp = pd.concat([pd.read_csv(f"shots_{y}.csv", usecols=["season", "isPlayoffGame", "shooterPlayerId", "xGoal", "goal", "event"]) for y in (2023, 2024, 2025)])
+mp = pd.concat([pd.read_csv(f"{DATA}/shots_{y}.csv", usecols=["season", "isPlayoffGame", "shooterPlayerId", "xGoal", "goal", "event"]) for y in (2023, 2024, 2025)])
 mp = mp[mp.isPlayoffGame == 0]
 mp_tot = mp.groupby(["season", "shooterPlayerId"]).agg(mp_xg=("xGoal", "sum"), mp_n=("goal", "size")).reset_index()
 mine = sk.assign(season=sk.season // 10000).groupby(["season", "shooterId"]).agg(my_xg=("xg", "sum"), my_n=("goal", "size"), goals=("goal", "sum")).reset_index()

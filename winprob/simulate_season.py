@@ -13,6 +13,7 @@ Ajo: .venv/bin/python winprob/simulate_season.py [--sims 100000] [--horizon 80] 
 """
 import argparse
 import json
+import os
 import pathlib
 import subprocess
 import sys
@@ -26,7 +27,7 @@ import numpy as np
 import pandas as pd
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-DATA = ROOT / "data"
+DATA = pathlib.Path(os.environ.get("XG_DATA", ROOT / "data"))
 sys.path.insert(0, str(ROOT / "nhl_pbp"))
 sys.path.insert(0, str(ROOT / "winprob"))
 from simcore import Ratings, lin_score, outcome_cum, record_tables, rest_days, shrink, simulate

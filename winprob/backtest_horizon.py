@@ -13,6 +13,7 @@ Ajo: .venv/bin/python winprob/backtest_horizon.py [--sims 4000]
 """
 import argparse
 import json
+import os
 import pathlib
 import sys
 import urllib.request
@@ -26,7 +27,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-DATA = ROOT / "data"
+DATA = pathlib.Path(os.environ.get("XG_DATA", ROOT / "data"))
 sys.path.insert(0, str(ROOT / "winprob"))
 from simcore import Ratings, lin_score, outcome_cum, record_tables, rest_days, shrink, simulate
 
